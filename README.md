@@ -356,5 +356,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **Simple Home Assistant** - Your family's digital command center, optimized for real-world tablet usage! 🏠✨
-
-*Built with ❤️ for Fire 7 tablets and family organization*
