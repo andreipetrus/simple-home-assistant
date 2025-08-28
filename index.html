@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DogeAssistant Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/widgets.css">
+    <link rel="stylesheet" href="/widgets/calendar/calendar-widget.css">
+    <link rel="stylesheet" href="/widgets/sonos/sonos-widget.css">
+    <link rel="stylesheet" href="/widgets/weather/weather-widget.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <nav class="tab-navigation" id="tabNavigation">
+                <button class="tab-btn active" data-tab="calendar">📅 Calendar</button>
+                <button class="tab-btn" data-tab="weather">🌤️ Weather</button>
+                <button class="tab-btn" data-tab="sonos">🔊 Sonos</button>
+            </nav>
+            <div class="header-actions">
+                <span class="last-updated" id="lastUpdated">Loading...</span>
+                <a href="/admin" class="admin-link">⚙️ Settings</a>
+                <button class="refresh-btn" id="refreshBtn" title="Refresh All Widgets">🔄</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="single-widget-view" id="singleWidgetView">
+            <!-- Calendar Tab Content -->
+            <div class="tab-content active" data-tab="calendar" id="calendarTab">
+                <div class="widget-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading calendar...</p>
+                </div>
+            </div>
+            
+            <!-- Weather Tab Content -->
+            <div class="tab-content" data-tab="weather" id="weatherTab">
+                <div class="widget-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading weather...</p>
+                </div>
+            </div>
+            
+            <!-- Sonos Tab Content -->
+            <div class="tab-content" data-tab="sonos" id="sonosTab">
+                <div class="widget-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading Sonos...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="error-toast" id="errorToast">
+        <span class="error-message" id="errorMessage"></span>
+        <button class="error-close" id="errorClose">×</button>
+    </div>
+
+    <script src="/assets/libs/ical.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/widget-manager.js"></script>
+    <script src="/widgets/calendar/calendar-widget.js"></script>
+    <script src="/widgets/sonos/sonos-widget.js"></script>
+    <script src="/widgets/weather/weather-widget.js"></script>
+    <script src="/assets/js/app.js"></script>
+</body>
+</html>

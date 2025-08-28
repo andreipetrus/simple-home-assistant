@@ -1,0 +1,48 @@
+{
+  "name": "doge-assistant",
+  "version": "1.0.0",
+  "description": "A web dashboard with widgets for Sonos control and family calendar management",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:calendar": "jest tests/calendar --testNamePattern='Calendar.*Test.*Suite|Calendar.*Integration.*Tests|Calendar.*Functionality'",
+    "test:calendar:unit": "jest tests/calendar/calendar-unit.test.js",
+    "test:calendar:integration": "jest tests/calendar/calendar-integration.test.js", 
+    "test:calendar:e2e": "playwright test tests/calendar/",
+    "test:calendar:comprehensive": "playwright test tests/calendar/calendar-suite.test.js",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:all": "npm run test && npm run test:e2e",
+    "test:calendar:all": "npm run test:calendar && npm run test:calendar:e2e"
+  },
+  "keywords": [
+    "dashboard",
+    "widgets",
+    "sonos",
+    "calendar",
+    "home-automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@svrooij/sonos": "^2.5.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2",
+    "sonos": "^1.14.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

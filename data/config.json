@@ -1,0 +1,14 @@
+{
+  "theme": "light",
+  "refreshInterval": 300000,
+  "showDebugInfo": false,
+  "calendar": {
+    "pastWeeks": 2,
+    "futureMonths": 3
+  },
+  "weather": {
+    "defaultLocation": "auto",
+    "locations": [],
+    "refreshInterval": 300000
+  }
+}

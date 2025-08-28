@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DogeAssistant - Management Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">🐕 DogeAssistant Admin</h1>
+            <div class="header-actions">
+                <a href="/" class="dashboard-link">📊 Dashboard</a>
+                <button class="save-btn" id="saveBtn">💾 Save Changes</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-content">
+        <div class="admin-grid">
+            <!-- Calendar Management -->
+            <section class="admin-section">
+                <h2 class="section-title">📅 Calendar Management</h2>
+                
+                <div class="form-group">
+                    <label for="calendarName">Calendar Name</label>
+                    <input type="text" id="calendarName" placeholder="My Family Calendar">
+                </div>
+                
+                <div class="form-group">
+                    <label for="calendarUrl">iCal URL</label>
+                    <input type="url" id="calendarUrl" placeholder="https://calendar.google.com/calendar/ical/...">
+                    <small class="form-hint">Copy the iCal URL from Google Calendar, Apple Calendar, or Outlook</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="calendarInterval">Refresh Interval (minutes)</label>
+                    <select id="calendarInterval">
+                        <option value="300000">5 minutes</option>
+                        <option value="900000">15 minutes</option>
+                        <option value="1800000">30 minutes</option>
+                        <option value="3600000">1 hour</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary" id="addCalendar">Add Calendar</button>
+                
+                <div class="calendar-config">
+                    <h3>Calendar View Configuration</h3>
+                    
+                    <div class="form-group">
+                        <label for="pastWeeks">Past Weeks to Show</label>
+                        <select id="pastWeeks">
+                            <option value="1">1 week</option>
+                            <option value="2" selected>2 weeks</option>
+                            <option value="3">3 weeks</option>
+                            <option value="4">4 weeks</option>
+                        </select>
+                        <small class="form-hint">How many weeks in the past to show in calendar</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="futureMonths">Future Months to Show</label>
+                        <select id="futureMonths">
+                            <option value="1">1 month</option>
+                            <option value="2">2 months</option>
+                            <option value="3" selected>3 months</option>
+                            <option value="6">6 months</option>
+                        </select>
+                        <small class="form-hint">How many months in the future to show in calendar</small>
+                    </div>
+                    
+                    <button class="btn btn-secondary" id="saveCalendarConfig">Save Calendar Config</button>
+                </div>
+                
+                <div class="calendar-list" id="calendarList">
+                    <div class="loading">Loading calendars...</div>
+                </div>
+            </section>
+
+            <!-- Sonos Management -->
+            <section class="admin-section">
+                <h2 class="section-title">🔊 Sonos Network Control</h2>
+                
+                <div class="sonos-status" id="sonosStatus">
+                    <div class="loading">Discovering Sonos devices...</div>
+                </div>
+                
+                <div class="sonos-info">
+                    <p>📡 <strong>Local Network Control</strong></p>
+                    <p>DogeAssistant automatically discovers Sonos speakers on your local network. No cloud authentication required!</p>
+                </div>
+                
+                <div class="device-discovery">
+                    <button class="btn btn-primary" id="refreshSonosDevices">🔄 Refresh Device List</button>
+                    <button class="btn btn-secondary" id="testSonosConnection">🎵 Test Playback</button>
+                </div>
+                
+                <div class="sonos-devices" id="sonosDevices">
+                    <div class="loading">Loading devices...</div>
+                </div>
+                
+                <div class="sonos-help" id="sonosHelp">
+                    <h3>Local Network Setup</h3>
+                    <ul>
+                        <li>✅ <strong>No OAuth required</strong> - Direct UPnP control</li>
+                        <li>🏠 <strong>Local network only</strong> - Works without internet</li>
+                        <li>⚡ <strong>Faster response</strong> - No cloud API delays</li>
+                        <li>🔒 <strong>More secure</strong> - All communication stays local</li>
+                    </ul>
+                    <p><strong>Troubleshooting:</strong></p>
+                    <ul>
+                        <li>Ensure Sonos speakers are connected to the same WiFi network</li>
+                        <li>Make sure speakers are powered on and not in sleep mode</li>
+                        <li>Try the refresh button if devices don't appear immediately</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Weather Management -->
+            <section class="admin-section">
+                <h2 class="section-title">🌤️ Weather Management</h2>
+                
+                <div class="form-group">
+                    <label for="weatherDefaultLocation">Default Location</label>
+                    <select id="weatherDefaultLocation">
+                        <option value="auto">Auto-detect (IP-based)</option>
+                    </select>
+                    <small class="form-hint">Choose your default weather location</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="weatherRefreshInterval">Refresh Interval (minutes)</label>
+                    <select id="weatherRefreshInterval">
+                        <option value="300000">5 minutes</option>
+                        <option value="900000">15 minutes</option>
+                        <option value="1800000">30 minutes</option>
+                        <option value="3600000">1 hour</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-secondary" id="saveWeatherConfig">Save Weather Config</button>
+                
+                <div class="weather-locations">
+                    <h3>Saved Locations</h3>
+                    
+                    <div class="add-location-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="weatherLocationName">Location Name</label>
+                                <input type="text" id="weatherLocationName" placeholder="e.g., Home, Office">
+                            </div>
+                            <div class="form-group">
+                                <label for="weatherLocationCity">City</label>
+                                <input type="text" id="weatherLocationCity" placeholder="e.g., New York, NY">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="weatherLocationLat">Latitude</label>
+                                <input type="number" id="weatherLocationLat" step="0.0001" placeholder="40.7128">
+                            </div>
+                            <div class="form-group">
+                                <label for="weatherLocationLon">Longitude</label>
+                                <input type="number" id="weatherLocationLon" step="0.0001" placeholder="-74.0060">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="addWeatherLocation">Add Location</button>
+                        <button class="btn btn-secondary" id="getLocationCoords">🌍 Get Coordinates</button>
+                    </div>
+                    
+                    <div class="weather-locations-list" id="weatherLocationsList">
+                        <div class="loading">Loading locations...</div>
+                    </div>
+                </div>
+                
+                <div class="weather-info">
+                    <h3>Weather Data Source</h3>
+                    <div class="info-card">
+                        <h4>🌤️ Open-Meteo API</h4>
+                        <p><strong>Free & No API Key Required</strong></p>
+                        <ul>
+                            <li>✅ High-resolution weather data (1-11 km)</li>
+                            <li>⚡ Fast response times (&lt;10ms)</li>
+                            <li>🏛️ Data from national weather services</li>
+                            <li>📊 5-day forecasts with hourly data</li>
+                        </ul>
+                        <p><small>Location detection uses IP-API.com for auto-detection</small></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Settings -->
+            <section class="admin-section">
+                <h2 class="section-title">⚙️ System Settings</h2>
+                
+                <div class="form-group">
+                    <label for="theme">Theme</label>
+                    <select id="theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="globalRefresh">Global Refresh Interval (minutes)</label>
+                    <select id="globalRefresh">
+                        <option value="60000">1 minute</option>
+                        <option value="300000">5 minutes</option>
+                        <option value="900000">15 minutes</option>
+                        <option value="1800000">30 minutes</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="showDebugInfo">
+                        Show Debug Information
+                    </label>
+                </div>
+                
+                <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+                <button class="btn btn-secondary" id="exportConfig">📤 Export Config</button>
+                <button class="btn btn-secondary" id="importConfig">📥 Import Config</button>
+            </section>
+
+            <!-- System Status -->
+            <section class="admin-section">
+                <h2 class="section-title">📊 System Status</h2>
+                
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Server Status</span>
+                        <span class="status-value online">Online</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Active Calendars</span>
+                        <span class="status-value" id="activeCalendars">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Sonos Status</span>
+                        <span class="status-value" id="sonosStatusValue">Disconnected</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Last Update</span>
+                        <span class="status-value" id="lastSystemUpdate">Never</span>
+                    </div>
+                </div>
+                
+                <div class="logs-section">
+                    <h3>Recent Activity</h3>
+                    <div class="logs" id="systemLogs">
+                        <div class="log-item">System started successfully</div>
+                    </div>
+                    <button class="btn btn-secondary" id="clearLogs">Clear Logs</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="success-toast" id="successToast">
+        <span class="success-message" id="successMessage"></span>
+        <button class="success-close" id="successClose">×</button>
+    </div>
+
+    <div class="error-toast" id="errorToast">
+        <span class="error-message" id="errorMessage"></span>
+        <button class="error-close" id="errorClose">×</button>
+    </div>
+
+    <input type="file" id="configFileInput" style="display: none;" accept=".json">
+
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/admin.js"></script>
+</body>
+</html>
