@@ -2,8 +2,7 @@
 
 ## Overview
 
-This testing suite provides comprehensive coverage for the DogeAssistant project, focusing on calendar functionality with the provided Outlook ICS URL:
-`https://outlook.live.com/owa/calendar/3a0fc431-b768-4780-9935-fed5dd92745a/e57bc9e7-8ed4-41f4-a140-d060db7398d4/cid-7D956C0517CE295E/calendar.ics`
+This testing suite provides comprehensive coverage for the DogeAssistant project, focusing on calendar functionality with test calendar URLs.
 
 ## Test Structure
 
@@ -63,7 +62,7 @@ npm test -- --testNamePattern="Outlook URL"
 
 ### 2. Integration Tests (`tests/integration/calendar-api.test.js`)
 - **GET /api/calendars**: List calendars
-- **POST /api/calendars**: Add new calendar (tests with real Outlook URL)
+- **POST /api/calendars**: Add new calendar (tests with sample URLs)
 - **DELETE /api/calendars/:id**: Remove calendar
 - **PUT /api/calendars/:id**: Update calendar settings
 - **Data Persistence**: Verify data is saved to JSON files
@@ -77,10 +76,10 @@ npm test -- --testNamePattern="Outlook URL"
 
 ## Test Features
 
-### Real Data Testing
-- Uses the provided Outlook ICS URL for realistic testing scenarios
-- Tests actual calendar URL formats and validation
-- Verifies API endpoints work with real calendar data
+### Real Data Testing  
+- Uses sample ICS URLs for realistic testing scenarios
+- Tests various calendar URL formats and validation
+- Verifies API endpoints work with test calendar data
 
 ### Data Isolation
 - Each test runs with clean data state
