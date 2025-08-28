@@ -73,6 +73,9 @@ DogeAssistant/
 ├── widgets/
 │   ├── calendar/
 │   │   └── calendar-widget.js # Calendar widget implementation
+│   ├── weather/
+│   │   ├── weather-widget.js  # Weather widget implementation
+│   │   └── weather-widget.css # Weather-specific styles
 │   └── sonos/
 │       └── sonos-widget.js    # Sonos widget implementation
 ├── data/
@@ -106,6 +109,13 @@ npm run test:calendar:all    # Run all calendar tests (unit + integration + E2E)
 npm run test:calendar:unit   # Unit tests only
 npm run test:calendar:e2e    # E2E tests only
 npm run test:calendar:comprehensive # Full test suite
+
+# Weather-specific testing
+npm run test:weather:all     # Run all weather tests (unit + integration + E2E)
+npm run test:weather:unit    # Unit tests only
+npm run test:weather:integration # API integration tests
+npm run test:weather:e2e     # E2E tests only
+npm run test:weather:comprehensive # Complete test suite
 
 # General testing
 npm test                     # Jest unit tests
