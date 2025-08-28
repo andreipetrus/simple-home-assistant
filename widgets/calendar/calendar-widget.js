@@ -268,7 +268,11 @@ var CalendarWidget = {
         var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         
         while (currentDate <= endDate) {
-            var dateKey = currentDate.toISOString().split('T')[0];
+            // Use local date components instead of UTC to avoid timezone offset issues
+            var year = currentDate.getFullYear();
+            var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+            var day = ('0' + currentDate.getDate()).slice(-2);
+            var dateKey = year + '-' + month + '-' + day;
             var currentDateStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
             
             grouped[dateKey] = {
@@ -281,7 +285,13 @@ var CalendarWidget = {
         
         // Add events to their respective dates
         events.forEach(function(event) {
-            var dateKey = event.startTime.toISOString().split('T')[0];
+            // Use local date components instead of UTC to avoid timezone offset issues
+            var date = event.startTime;
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var dateKey = year + '-' + month + '-' + day;
+            
             if (grouped[dateKey]) {
                 grouped[dateKey].events.push(event);
             }
@@ -640,7 +650,11 @@ var CalendarWidget = {
             if (isToday) cssClass += ' today';
             if (hasEvents) cssClass += ' has-events';
             
-            var dateStr = date.toISOString().split('T')[0];
+            // Use local date components instead of UTC to avoid timezone offset issues
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var dateStr = year + '-' + month + '-' + day;
             html += '<div class="' + cssClass + '" data-date="' + dateStr + '" onclick="CalendarWidget.selectDate(\'' + dateStr + '\')">';
             html += date.getDate();
             html += '</div>';
