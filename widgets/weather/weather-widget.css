@@ -174,13 +174,48 @@
     text-align: center;
 }
 
+.hourly-carousel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+.carousel-arrow {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.carousel-arrow:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-arrow:active {
+    transform: scale(0.95);
+}
+
 .hourly-timeline {
     display: flex;
     gap: 12px;
-    overflow-x: auto;
+    overflow-x: hidden;
     padding: 8px 4px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    flex: 1;
 }
 
 .hourly-timeline::-webkit-scrollbar {

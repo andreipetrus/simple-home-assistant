@@ -170,6 +170,7 @@ var WeatherWidget = {
             temperature_unit: this.config.temperatureUnit,
             wind_speed_unit: windSpeedUnit,
             precipitation_unit: precipitationUnit,
+            timezone: this.currentLocation.timezone || 'auto',
             forecast_days: 5
         });
 
@@ -262,9 +263,26 @@ var WeatherWidget = {
                 self.addCustomLocation();
             });
         }
+
+        // Carousel navigation
+        var prevBtn = this.container.querySelector('#weatherCarouselPrev');
+        var nextBtn = this.container.querySelector('#weatherCarouselNext');
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                self.scrollCarousel('prev');
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                self.scrollCarousel('next');
+            });
+        }
     },
 
     renderWeather: function() {
+        var self = this;
         if (!this.weatherData) return;
 
         var current = this.weatherData.current;
@@ -288,13 +306,18 @@ var WeatherWidget = {
                         '<div class="weather-stats">' +
                             '<span>💧 ' + current.relative_humidity_2m + '%</span>' +
                             '<span>💨 ' + Math.round(current.wind_speed_10m) + ' ' + windUnit + '</span>' +
+                            this.renderSunTimes() +
                         '</div>' +
                     '</div>' +
                 '</div>' +
                 '<div class="hourly-weather">' +
                     '<div class="hourly-header">Today\'s Hourly Forecast</div>' +
-                    '<div class="hourly-timeline">' +
-                        this.renderHourlyForecast() +
+                    '<div class="hourly-carousel">' +
+                        '<button class="carousel-arrow carousel-prev" id="weatherCarouselPrev">‹</button>' +
+                        '<div class="hourly-timeline" id="weatherHourlyTimeline">' +
+                            this.renderHourlyForecast() +
+                        '</div>' +
+                        '<button class="carousel-arrow carousel-next" id="weatherCarouselNext">›</button>' +
                     '</div>' +
                 '</div>' +
             '</div>' +
@@ -313,6 +336,11 @@ var WeatherWidget = {
 
         // Update temperature unit toggle
         this.updateTemperatureUnitToggle();
+        
+        // Initialize carousel arrows
+        setTimeout(function() {
+            self.updateCarouselArrows();
+        }, 100);
     },
 
     renderForecastDays: function() {
@@ -376,6 +404,81 @@ var WeatherWidget = {
         }
         
         return hourlyItems.join('');
+    },
+
+    renderSunTimes: function() {
+        if (!this.weatherData.daily || !this.weatherData.daily.sunrise || !this.weatherData.daily.sunset) {
+            return '';
+        }
+
+        // Get sunrise and sunset from API (now in correct timezone due to timezone parameter)
+        var sunriseISO = this.weatherData.daily.sunrise[0];
+        var sunsetISO = this.weatherData.daily.sunset[0];
+        
+        // Extract the time portion from the ISO string (format: "2025-08-28T06:36")
+        var sunriseMatch = sunriseISO.match(/T(\d{2}):(\d{2})/);
+        var sunsetMatch = sunsetISO.match(/T(\d{2}):(\d{2})/);
+        
+        if (!sunriseMatch || !sunsetMatch) {
+            return '';
+        }
+        
+        // Extract hours and minutes
+        var sunriseHour = parseInt(sunriseMatch[1]);
+        var sunriseMin = parseInt(sunriseMatch[2]);
+        var sunsetHour = parseInt(sunsetMatch[1]);
+        var sunsetMin = parseInt(sunsetMatch[2]);
+        
+        // Format times manually to avoid timezone conversion issues
+        var sunriseTime = this.formatTime(sunriseHour, sunriseMin);
+        var sunsetTime = this.formatTime(sunsetHour, sunsetMin);
+        
+        return '<span>🌅 ' + sunriseTime + '</span>' +
+               '<span>🌇 ' + sunsetTime + '</span>';
+    },
+
+    formatTime: function(hour, minute) {
+        var period = hour >= 12 ? 'PM' : 'AM';
+        var displayHour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+        var displayMinute = minute < 10 ? '0' + minute : minute;
+        return displayHour + ':' + displayMinute + ' ' + period;
+    },
+
+    scrollCarousel: function(direction) {
+        var timeline = this.container.querySelector('#weatherHourlyTimeline');
+        if (!timeline) return;
+
+        var itemWidth = 82; // Width of hourly item (70px + 12px gap)
+        var visibleItems = 4; // Number of items visible at once
+        var scrollAmount = itemWidth * 2; // Scroll 2 items at a time
+
+        var currentScroll = timeline.scrollLeft;
+        var newScroll = direction === 'next' 
+            ? currentScroll + scrollAmount 
+            : currentScroll - scrollAmount;
+
+        timeline.scrollTo({
+            left: Math.max(0, newScroll),
+            behavior: 'smooth'
+        });
+
+        // Update arrow visibility
+        setTimeout(function() {
+            this.updateCarouselArrows();
+        }.bind(this), 300);
+    },
+
+    updateCarouselArrows: function() {
+        var timeline = this.container.querySelector('#weatherHourlyTimeline');
+        var prevBtn = this.container.querySelector('#weatherCarouselPrev');
+        var nextBtn = this.container.querySelector('#weatherCarouselNext');
+        
+        if (!timeline || !prevBtn || !nextBtn) return;
+
+        var maxScroll = timeline.scrollWidth - timeline.clientWidth;
+        
+        prevBtn.style.opacity = timeline.scrollLeft <= 0 ? '0.3' : '1';
+        nextBtn.style.opacity = timeline.scrollLeft >= maxScroll ? '0.3' : '1';
     },
 
     getWeatherIcon: function(code) {
